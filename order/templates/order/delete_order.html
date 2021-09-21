@@ -1,0 +1,13 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}Delete order{% endblock %}
+{% block content %}
+
+<h1>You really want to delete order number {{order_delete.id}}?</h1>
+<div class="container">
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Delete</button>
+</form>
+</div>
+
+{% endblock %}

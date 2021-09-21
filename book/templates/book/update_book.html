@@ -1,0 +1,12 @@
+{% extends 'homepage/homepage.html' %}
+
+{% block content %}
+<h1>Update book {{ book.name  }}</h1>
+<form method='post'>
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit" class='btn btn-primary btn-block' name="button" value="Update">OK</button>
+    
+</form>
+
+{% endblock %}

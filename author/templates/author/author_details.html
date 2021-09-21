@@ -1,0 +1,31 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}{{author_details.name}} {{author_details.surname}}{% endblock %}
+{% block content %}
+
+<div class="container">
+    <h1>{{ author_details.name }} {{ author_details.patronymic }} {{ author_details.surname }}</h1>
+                        <a href="{% url 'author-update' author_details.id %}">
+                <button class="btn btn-info">Edit author</button>
+            </a>
+        <a href="{% url 'author-delete' author_details.id %}">
+                <button class="btn btn-danger">Delete author</button>
+            </a>
+    <div class="container alert-dark text-left">
+            <h2>Author's book list: </h2>
+
+        <ul>
+    {% for book in auth_books %}
+            {% for auth in book.authors.all %}
+                {% if auth.id == author_details.id %}
+                    <li class="card-body">Book name: <h4>{{ book.name }}</h4>
+                        Count: <h4>{{ book.count }}</h4>
+                    </li>
+                {% endif %}
+            {% endfor %}
+    {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

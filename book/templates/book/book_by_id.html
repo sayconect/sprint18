@@ -1,0 +1,18 @@
+{% extends 'homepage/homepage.html' %}
+
+{% block content %}
+<div><h1>Add book</h1>
+<h3>Iformation about book</h3>
+{{  book.name  }}
+{% for author in book.authors.all %}
+{{ author.name}}
+{{author.surname}}
+{% endfor %}
+{{  book.count  }}
+</div>
+<div>
+    <form ></form>
+</div>
+<a href="{% url  'update_book'  book.pk   %}" class="btn btn-primary mt-3">Update</a>
+<a href="{% url  'delete_book'  book.pk %}" class="btn btn-primary mt-3">Delete</a>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}Authors{% endblock %}
+{% block content %}
+
+    <form method="post" class='form-inline' >
+    {% csrf_token %}
+      <div class="form-group mb-2">
+      <select id="inputState" class="form-control" name="opt">
+        <option>Show all authors with their books</option>
+        <option selected>Show specific author with his books (enter id)</option>
+      </select>
+    </div>
+      <div class="form-group mb-2">
+    <input class="form-control mr-sm-2" name='title', type="search" placeholder="Input text" aria-label="Search">
+  </div>
+    <button type="submit" name='book' class="btn btn-primary mb-2">Submit</button>
+</form>
+<table class="table table-bordered table-dark">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Patronymic</th>
+      <th>Surname</th>
+      <th>Books</th>
+       <th>More</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for author in authors %}
+        <tr>
+            <td>{{ author.id }}</td>
+            <td>{{ author.name }}</td>
+            <td>{{ author.patronymic }}</td>
+            <td>{{ author.surname }}</td>
+            <td>{% for book in books %}
+                    {% for auth in book.authors.all %}
+                        {% if author.id == auth.id %}
+                            {{ book.name }},
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <td><a href="{% url 'author-details' author.id %}">Details</a></td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+    <a href="{% url 'add-author' %}">
+        <button type="button" class="btn btn-info font-weight-bold">Add new author</button>
+    </a>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}Delete author{% endblock %}
+{% block content %}
+
+<h1>You really want to delete author {{author_delete.name}} {{author_delete.patronymic}} {{author_delete.surname}}?</h1>
+<div class="container">
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Delete</button>
+</form>
+</div>
+
+{% endblock %}

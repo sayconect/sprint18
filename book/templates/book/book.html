@@ -1,0 +1,54 @@
+{% extends 'homepage/homepage.html' %}
+<body>
+{% block content %}
+
+<form method="post" class='form-inline' >
+    {% csrf_token %}
+      <div class="form-group mb-2">
+      <select id="inputState" class="form-control" name="opt">
+        <option selected>Show all books</option>
+        <option>Show specific book (enter id)</option>
+        <option>Show all unordered book</option>
+        <option>Show all books by name of author</option>
+        <option>Show all books sorted by name asc</option>
+        <option>Show all books sorted by name desc</option>
+        <option>Show all books sorted by count</option>
+      </select>
+    </div>
+      <div class="form-group mb-2">
+    <input class="form-control mr-sm-2" name='title' type="search" placeholder="Input text" aria-label="Search">
+  
+    <button type="submit" name='book' class="btn btn-primary">Submit</button>
+</form>
+<a href="{% url 'add_book' %}" class="btn btn-warning ml-2">Add book</a>
+</div>
+<table class="table table-bordered table-dark">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Author</th>
+      <th>Count</th>
+      <th>Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.name }}</td>
+            <td>{{ book.description }}</td>
+            <td>{% for author in book.authors.all %}
+            {{ author.name }} {{ author.patronymic }},
+            {% endfor %}</td>
+            <td>{{ book.count }}</td>
+            <td><a href="{{ book.id }}">Detail</a></td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+    </div>
+</body>
+{% endblock %}
+

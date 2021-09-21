@@ -1,1 +1,3 @@
-# sprint18
+## Django
+
+`python manage.py runserver`

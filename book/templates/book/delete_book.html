@@ -1,0 +1,13 @@
+{% extends 'homepage/homepage.html' %}
+
+{% block content %}
+<h1>Are you sure that you want to delete {{ book.name  }}?</h1>
+{{ book.name  }}
+<form method='post'>
+    {% csrf_token %}
+    <button type="submit" class='btn btn-primary btn-block' name="button" value="Delete_all">Delete all books</button>
+    <button type="submit" class='btn btn-primary btn-block' name="button" value="Delete_one">Delete one book</button>
+    
+</form>
+
+{% endblock %}

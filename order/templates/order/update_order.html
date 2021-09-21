@@ -1,0 +1,14 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}Update order{% endblock %}
+{% block content %}
+
+<h1>Update order number {{order_update.id}}</h1>
+<div class="container">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success" type="submit">Submit</button>
+</form>
+</div>
+
+{% endblock %}

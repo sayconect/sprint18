@@ -1,0 +1,57 @@
+{% extends 'homepage/homepage.html' %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+
+<form method="post" class='form-inline' >
+    {% csrf_token %}
+      <div class="form-group mb-2">
+      <select id="inputState" class="form-control" name="opt">
+        <option selected>Show all orders</option>
+        <option>Show all books ordered by specific user (enter user id)</option>
+        <option>Show all orders sorted by created date</option>
+        <option>Show all orders sorted by planed date</option>
+        <option>Show all users who does not hand over books on time</option>
+      </select>
+    </div>
+      <div class="form-group mb-2">
+    <input class="form-control mr-sm-2" name='title', type="search" placeholder="Input text" aria-label="Search">
+  </div>
+    <button type="submit" name='book' class="btn btn-primary mb-2 mr-2">Submit</button>
+    <a href="{% url 'create_user' %}">
+        <button type="button" class="btn btn-warning mb-2">Create user</button>
+    </a>
+</form>
+<table class="table table-bordered table-dark">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Book</th>
+      <th>Created at</th>
+      <th>End at</th>
+      <th>Planed end at</th>
+      <th>:)</th>
+      <th>(:</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user.first_name }} {{ order.user.last_name }}</td>
+            <td>{{ order.book.name }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.end_at }}</td>
+            <td>{{ order.plated_end_at }}</td>
+            <td><a href="{% url 'delete-order' order.id %}">Delete</a></td>
+            <td><a href="{% url 'update-order' order.id %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+    <a href="{% url 'add-order' %}">
+        <button type="button" class="btn btn-info font-weight-bold">Add new order</button>
+    </a>
+    </div>
+{% endblock %}
+
