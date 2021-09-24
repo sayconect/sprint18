@@ -1,0 +1,11 @@
+{
+    "name": "Harry Potter",
+    "description": "Boy that lives",
+    "count": 12454,
+    "authors":[{
+        "id": 1,
+        "name": "J",
+        "surname": "Roaling",
+        "patronymic": "idk"
+    }]
+}

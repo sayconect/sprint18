@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -128,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-try:
-    from .local_settings import  *
-except ImportError:
-    pass
+# try:
+#     from .local_settings import  *
+# except ImportError:
+#     pass

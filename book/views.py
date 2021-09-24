@@ -10,6 +10,50 @@ from django.views.decorators.csrf import csrf_protect
 from .forms import BooksForm
 from django.http import HttpResponse
 from django.db.models import Q
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics, status
+from .serializers import *
+
+
+class BookAPIView(APIView):
+    @staticmethod
+    def get(request):
+        book = Book.objects.all()
+        serializers = BookSerializer(book, many=True)
+        return Response(serializers.data)
+
+    @staticmethod
+    def update(request):
+        data = request.data
+        if data['name']:
+            serializer = Book.objects.update(name=data['name'])
+        if data['description']:
+            serializer = Book.objects.update(description=data['description'])
+        if data['count']:
+            serializer = Book.objects.update(count=data['count'])
+        return Response(serializer.data)
+
+    @staticmethod
+    def delete(request):
+        book = Book.objects.all()
+        book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        print("Request Data", request.data)
+        data = request.data
+        book = Book.objects.create(name=data["name"], description=data["description"],
+                                   count=data["count"])
+        book.save()
+        for author in data["authors"]:
+            author_obj = Author.objects.get_or_create(surname=author["surname"])
+            book.authors.add(author_obj)
+
+        serializer = BookSerializer(book)
+
+        return Response(serializer.data)
 
 
 def book_by_id(request, book_id):
@@ -17,7 +61,8 @@ def book_by_id(request, book_id):
     context = {
         'book': book
     }
-    return render(request,'book/book_by_id.html',context)
+    return render(request, 'book/book_by_id.html', context)
+
 
 def delete_book(request, book_id):
     book = Book.objects.get(id=book_id)
@@ -29,7 +74,7 @@ def delete_book(request, book_id):
         return render(request, 'book/delete_book.html', context)
     if request.method == 'POST':
         action = request.POST.get('button')
-        
+
         if action == 'Delete_all':
             Book.delete_by_id(book_id)
             return redirect('book')
@@ -39,8 +84,6 @@ def delete_book(request, book_id):
             book.update(count=book.count)
             return redirect('book')
 
-
-
     # if action == 'Delete_one':
     #     book = Book.get_by_id(book_id)
     #     if book.count > 1:
@@ -48,7 +91,7 @@ def delete_book(request, book_id):
     #         book.update(count=book.count)
     #     else:
     #         Book.delete_by_id(book_id)
-        
+
     # elif action == 'Delete_all':
     #     Book.delete_by_id(book_id)
 
@@ -96,15 +139,15 @@ def get_unordered_books():
     get_all_unordered_books = set(all_books) - set(get_all_ordered_books)
     return get_all_unordered_books
 
+
 def add_book(request):
-    
     if request.method == "POST":
         form = BooksForm(request.POST)
         if form.is_valid():
             if not check_book_in_library(form):
                 form.save()
             return redirect('book')
-    
+
     elif request.method == "GET":
         form = BooksForm()
         context = {
@@ -133,7 +176,7 @@ class BookUpdateViews(UpdateView):
     # form_class = BooksForm
 # def update_book(request, book_id):
 #     if request.method == "POST":
-        
+
 #     else:    
 #         form = BooksForm()
 #         book  = Book.get_by_id(book_id)
