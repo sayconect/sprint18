@@ -3,11 +3,11 @@ from .models import *
 from author.models import Author
 
 
-class ProductRelatedSerializer(serializers.ModelSerializer):
+class AuthorRelatedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ("name", "surname", "patronymic", )
+        fields = ("id", "name", "surname", "patronymic", )
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -16,5 +16,5 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['name', "description", "count", "authors"]
+        fields = ['id', 'name', "description", "count", "authors"]
         depth = 1

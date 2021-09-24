@@ -8,6 +8,48 @@ from book.models import Book
 from django.views.generic import View, DetailView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_protect
 import datetime
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics, status
+from .serializers import *
+
+
+class OrderAPIView(APIView):
+    @staticmethod
+    def get(request):
+        order = Order.objects.all()
+        serializers = OrderSerializer(order, many=True)
+        return Response(serializers.data)
+
+    @staticmethod
+    def update(request):
+        data = request.data
+        if data['user']:
+            serializer = Order.objects.update(user=data['user'])
+        if data['book']:
+            serializer = Order.objects.update(book=data['book'])
+        if data['created_at']:
+            serializer = Order.objects.update(created_at=data['created_at'])
+        return Response(serializer.data)
+
+    @staticmethod
+    def delete(request):
+        order = Order.objects.all()
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        print("Request Data", request.data)
+        data = request.data
+        order = Order.objects.create(id=data["id"], user=data["user"],
+                                     book=data["book"], created_at=data["created_at"],
+                                     end_at=data["end_at"], plated_end_at=data["plated_end_at"])
+        order.save()
+        serializer = OrderSerializer(order)
+
+        return Response(serializer.data)
+
 
 def get_all(request):
     get_all_orders = Order.get_all()
@@ -48,6 +90,7 @@ def unpunctual_users():
                 result.append(elem)
     return result
 
+
 # ORDERS
 #         <option>Show all books of specific user (enter user id)</option>
 #         <option>Show all orders sorted by created date</option>
@@ -79,4 +122,3 @@ class OrderUpdateView(UpdateView):
     template_name = 'order/update_order.html'
     fields = ['plated_end_at', 'end_at']
     context_object_name = 'order_update'
-

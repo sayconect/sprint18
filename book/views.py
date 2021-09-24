@@ -48,7 +48,7 @@ class BookAPIView(APIView):
                                    count=data["count"])
         book.save()
         for author in data["authors"]:
-            author_obj = Author.objects.get_or_create(surname=author["surname"])
+            author_obj = Author.objects.get_or_create(id=author["id"])
             book.authors.add(author_obj)
 
         serializer = BookSerializer(book)
